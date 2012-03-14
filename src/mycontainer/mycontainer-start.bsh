@@ -1,0 +1,110 @@
+import org.mycontainer.kernel.*;
+import org.mycontainer.kernel.boot.*;
+import org.mycontainer.kernel.deploy.*;
+import org.mycontainer.ejb.*;
+import org.mycontainer.mail.*;
+import org.mycontainer.jpa.*;
+import org.mycontainer.datasource.*;
+import org.mycontainer.web.*;
+import org.mycontainer.web.jetty.*;
+import javax.naming.InitialContext;
+import org.easymock.EasyMock;
+
+import java.io.*;
+import java.nio.channels.FileChannel;
+
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Level;
+import org.apache.log4j.PatternLayout;
+
+try {	
+	// configuracao do logger
+	Logger root = Logger.getRootLogger();
+	root.setLevel(Level.INFO);
+	ConsoleAppender appender = new ConsoleAppender(new PatternLayout("%-5p [%t]: %m%n"));
+	root.addAppender(appender);
+
+	// configuracao da aplicacao
+	System.setProperty("java.naming.factory.initial", "org.mycontainer.kernel.naming.MyContainerContextFactory");	
+	System.setProperty("loginMocado", "true");
+	// Resolver problema do Form too long do Jetty (o padrao eh 200000)
+	System.setProperty("org.mortbay.jetty.Request.maxFormContentSize", "300000");
+
+	builder = new ContainerBuilder();
+	builder.deployVMShutdownHook();
+	SessionInterceptorDeployer sessionInterceptorDeployer = builder.createDeployer(SessionInterceptorDeployer.class);
+	sessionInterceptorDeployer.deploy();
+
+	// cricao do gerenciador de transacoes
+	MyTransactionManagerDeployer jta = builder.createDeployer(MyTransactionManagerDeployer.class);
+	jta.setName("TransactionManager");
+	jta.setUserTransactionName("UserTransaction");
+	jta.deploy();
+
+	// criacao do datasource do banco de dados
+	DataSourceDeployer ds = builder.createDeployer(DataSourceDeployer.class);
+	ds.setName("java:/HolyResteasyDS");
+	ds.setDriver("org.hsqldb.jdbcDriver");
+	String userHome = System.getProperty("user.home");
+	ds.setUrl("jdbc:hsqldb:file:" + userHome + "/holyResteasy/data");
+	ds.deploy();
+
+	//JPADeployer jpa = builder.createDeployer(JPADeployer.class);
+	//JPAInfoBuilder info = (JPAInfoBuilder) jpa.getInfo();
+	//info.setPersistenceUnitName("holyResteasy-pu");
+	//info.setJtaDataSourceName("java:/HolyResteasyDS");
+	//info.addJarFileUrl(Entidade.class);
+	//info.setPersistenceUnitRootUrl(EntidadeRepository.class);
+
+	// configuracao do hibernate	
+	//Properties props = info.getProperties();
+	//props.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
+	//props.setProperty("hibernate.hbm2ddl.auto", "update");
+	//props.setProperty("hibernate.show_sql", "true");
+	//props.setProperty("hibernate.transaction.auto_close_session", "true");
+
+	//CONFIGURACAO DO CACHE DE SEGUNDO NIVEL
+	//props.setProperty("hibernate.cache.use_second_level_cache", "false");
+	//props.setProperty("hibernate.cache.use_query_cache", "false");
+	//props.setProperty("hibernate.jdbc.batch_size", "20");
+	//props.setProperty("hibernate.default_batch_fetch_size", "8");
+        //props.setProperty("hibernate.show_sql", "true");
+
+	//jpa.deploy();
+
+	NamingAliasDeployer alias = builder.createDeployer(NamingAliasDeployer.class);
+	alias.setDestination("resource/javax/jms/ConnectionFactory");
+	alias.setName("ConnectionFactory");
+	alias.deploy();
+
+	// deploy do projeto EJB de dominio	
+	ScannerDeployer scanner = builder.createDeployer(ScannerDeployer.class);
+	scanner.add(new StatelessScannableDeployer());
+	scanner.add(new MessageDrivenScannableDeployer());
+	//scanner.scan(EntidadeRepositoryBean.class);
+	scanner.deploy();
+
+	// cricao do webserver	
+	JettyServerDeployer webServer = builder.createDeployer(JettyServerDeployer.class);
+        //webServer.getServer().setSessionIdManager(new org.mortbay.jetty.servlet.HashSessionIdManager(new Random()));
+	webServer.bindPort(9080);
+	webServer.setName("WebServer");
+
+    	// criacao da aplicacao web corretora/banco
+	ContextWebServer mainContext = webServer.createContextWebServer();
+	mainContext.setContext("/holyResteasy");
+	mainContext.setResources("view/main-web/src/main/webapp/");
+
+	// deploy do servidor web
+	webServer.deploy();
+
+	// inicializacao do banco de dados atraves do datasource HolyResteasyDS
+
+	//DatabaseManager.runManager("java:/HolyResteasyDS");
+
+	builder.waitFor();
+} catch (Exception e) {
+	e.printStackTrace();
+    	throw e;
+}
