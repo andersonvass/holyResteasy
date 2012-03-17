@@ -40,6 +40,7 @@
 		<resteasy-jaxrs.version>2.2.1.GA</resteasy-jaxrs.version>
 		<gson.version>1.7.1</gson.version>
 		<cobertura.version>2.4</cobertura.version>
+		<flexjson.version>2.1</flexjson.version>
 	</properties>
 
 	<repositories>
@@ -393,6 +394,12 @@
 				<version>${gson.version}</version>
 				<type>jar</type>
 			</dependency>		
+			<dependency>
+				<groupId>net.sf.flexjson</groupId>
+				<artifactId>flexjson</artifactId>
+				<version>${flexjson.version}</version>
+				<type>jar</type>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 

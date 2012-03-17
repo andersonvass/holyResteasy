@@ -61,14 +61,26 @@
 		<!-- liquidblue theme  -->
 		<link rel="stylesheet" type="text/css" href="holy/themes/liquidblue/base.css"/>
 		<link rel="stylesheet" type="text/css" href="holy/themes/liquidblue/components.css"/>
+		
+		<!-- Application Scripts -->
+		<script type="text/javascript" src="js/index.js"></script>
+		<script type="text/javascript" src="js/userHB.js"></script>
+		
+		
 	</head>
 	<body>
-		<div id="wrapper">
+		<div id="wrapper" style="position:relative;text-align:left;margin: 0 auto; width:95%; min-width:1000px;">
 			<div id="header">
-				<h1>HolyResteasy</h1>				
-			</div>			
+				<h1><a href="#">HolyResteasy/a></h1>
+				<h2>The example project for integrate Holy with Java web application using the RestEasy framework
+				</h2>
+				
+				<div class="userbar"></div>
+				<div class="navigation"></div>
+			</div>
 			<ul class="message"></ul>
-			<div id="content"><p>The example project for integrate Holy with Java web application using the RestEasy framework</p></div>
+			<div id="content" style="overflow:auto"></div>
+			<div id="dialog" style="width: auto; position: absolute; top:0px; display: block;"></div>
 			<div id="footer"></div>
 		</div>
 	</body>
