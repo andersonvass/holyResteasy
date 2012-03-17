@@ -1,0 +1,34 @@
+<engine xmlns:hl="http://www.holyavenger.org/holyavenger/1.0">
+	<template selector="#content">	
+		<h2>Manage Users</h2>
+		<form class="forms" id="frmConsultar">	
+			<fieldset id="userFilters">
+				<legend>Filters</legend>
+					<ul>
+						<li>
+							<label for="name">
+								<b>Name: </b>
+							</label>
+						<input type="text" id="name" name="name" />
+						</li>
+						<li>
+							<label for="login">
+								<b>Login: </b>
+							</label>
+							<input type="text" id="login" name="login" />
+						</li>
+						<li>
+							<label for="active">
+								<b>Active: </b>
+							</label>
+							<input type="checkbox" id="active" name="active" />				
+						</li>
+				    </ul>
+			</fieldset>	 
+			<div class="buttons">
+				<input class="btSearch" type="submit" value="Search" onclick="userHB.searchUsers()" />
+				<input class="btClear" type="submit" value="Clear" />
+			</div>   
+		</form>
+	</template>
+</engine>

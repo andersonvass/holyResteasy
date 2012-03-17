@@ -1,0 +1,10 @@
+<engine xmlns:hl="http://www.holyavenger.org/holyavenger/1.0">
+	<template selector=".userbar">
+		<ul>
+			<li>
+				<label>Olá, ${usuarioLogado.loginUsuario}</label>
+				<a href="logout" title="Logout" class="logout">Logout</a>
+			</li>
+		</ul>
+	</template>
+</engine>

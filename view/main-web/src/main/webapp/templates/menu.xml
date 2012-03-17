@@ -1,0 +1,37 @@
+<engine xmlns:hl="http://www.holyavenger.org/holyavenger/1.0">
+	<template selector=".navigation">
+		<ul>
+			<li>
+				<a>Administration</a>
+				<ul>
+
+						<li id="manageUsers">
+							<a href="#user/searchUsers">Users</a>
+						</li>
+				</ul>
+			</li>
+		</ul>
+	</template>
+	<script>
+		$('.navigation > ul').dropDown( {
+			showlevel: true	
+		});
+
+		clickMenu = function(a){
+			if(a.href == window.location.href){
+			location.reload();
+			}
+		}
+
+		$('div.navigation ul.submenu a').click(function(){
+			clickMenu(this);
+		});
+		
+		$('div.navigation li a').click(function(){
+			clickMenu(this);
+		});
+		
+		
+
+	</script>
+</engine>

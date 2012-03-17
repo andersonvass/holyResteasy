@@ -1,0 +1,13 @@
+<engine xmlns:hl="http://www.holyavenger.org/holyavenger/1.0">
+	<template selector="#content">
+	<div  style="font-size: 12px;">
+	
+		<div>
+		   Error to access content 
+		</div>
+		<a href="#">Back to home</a>
+	
+	</div>
+	
+	</template>
+</engine>
