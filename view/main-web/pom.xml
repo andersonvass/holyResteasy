@@ -29,6 +29,10 @@
 			<artifactId>resteasy-jaxrs</artifactId>
 			<type>jar</type>
 		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jettison-provider</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

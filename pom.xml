@@ -38,6 +38,7 @@
 		<persistence-api.version>1.0</persistence-api.version>
 		<jsr250-api.version>1.0</jsr250-api.version>
 		<resteasy-jaxrs.version>2.2.1.GA</resteasy-jaxrs.version>
+		<resteasy-jettison-provider.version>2.3.2.Final</resteasy-jettison-provider.version>
 		<gson.version>1.7.1</gson.version>
 		<cobertura.version>2.4</cobertura.version>
 		<flexjson.version>2.1</flexjson.version>
@@ -387,6 +388,11 @@
 				<artifactId>resteasy-jaxrs</artifactId>
 				<version>${resteasy-jaxrs.version}</version>
 				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.resteasy</groupId>
+				<artifactId>resteasy-jettison-provider</artifactId>
+				<version>${resteasy-jettison-provider.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.code.gson</groupId>
